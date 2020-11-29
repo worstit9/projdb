@@ -6,3 +6,5 @@ I've try to use the sql connector version 5, it's succeed, but it won't work for
 to compile, type `javac *.java`\
 to run, type `java -cp .:./mysql-connector-java-5.1.48.jar Main`
 
+A testing table name_age will be create, some test data is inserted.\
+
