@@ -1,12 +1,13 @@
 import java.sql.*;
+import java.util.Scanner;
 
 class Main {
-    static Connection con = null;
-	static Statement stmt = null;
+    Connection con = null;
+	Statement stmt = null;
 	
-	static String create_new_tb = "CREATE TABLE name_age(name varchar(10), age int)"; 
-    
-	static void startUpMessage() {
+	String create_new_tb = "CREATE TABLE name_age(name varchar(10), age int)"; 
+
+	void startUpMessage() {
         //The welcome page
         System.out.println("Welcome! Who are you?");
         System.out.println("1. Admin");
@@ -18,7 +19,7 @@ class Main {
 		
     }
     
-    static void newConnection() {
+    void newConnection() {
 		
 		String dbAddress = "jdbc:mysql://projgw.cse.cuhk.edu.hk:2633/group77";
 		String dbUserName = "Group77";
@@ -33,11 +34,14 @@ class Main {
         }
 	}
     public static void main(String[] args) {
-        newConnection();
+        Main db = new Main();
+        db.startUpMessage();
+        db.newConnection();
     	try{
-    		stmt.executeUpdate(create_new_tb);
-    		stmt.executeUpdate("INSERT INTO name_age values('Alice',1)");
-    		stmt.executeUpdate("INSERT INTO name_age values('Bob',2)");
+    		db.stmt.executeUpdate(db.create_new_tb);
+    		db.stmt.executeUpdate("INSERT INTO name_age values('Alice',1)");
+    		db.stmt.executeUpdate("INSERT INTO name_age values('Bob',2)");
+    		db.stmt.executeUpdate("INSERT INTO name_age values('Charlie',3)");
     	}
     	catch (Exception e) {
     		System.out.println(e);
