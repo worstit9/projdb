@@ -2,10 +2,11 @@ import java.sql.*;
 import java.util.Scanner;
 
 class Main {
+	//class deal with start page
     Connection con = null;
 	Statement stmt = null;
 	
-	String create_new_tb = "CREATE TABLE name_age(name varchar(10), age int)"; 
+	
 
 	void startUpMessage() {
         //The welcome page
@@ -15,17 +16,27 @@ class Main {
         System.out.println("3. Driver");
         System.out.println("4. Manager");
         System.out.println("5. None");
-        System.out.println("Choose Input");
+        System.out.println("Choose Input 1-4");
 		
 	}
 	
-	void startUp(){		
+	void messageAfterInvalidInput(){
+		System.out.println("Invalid input");
+		System.out.println("Choose Input 1-4");
+	}
+	int getOptions(){		
 		int options;
-		do{
-			startUpMessage();
-			Scanner s = new Scanner(System.in);
+
+
+		startUpMessage();
+		Scanner s = new Scanner(System.in);
+		options = s.nextInt();
+
+		while(options < 1 || options > 5){
+			messageAfterInvalidInput();
 			options = s.nextInt();
-		}while(options < 1 || options > 5);
+		}
+		return options;
 		
 	}
     
@@ -43,20 +54,36 @@ class Main {
         	System.out.println(e);
         }
 	}
-    public static void main(String[] args) {
-        Main db = new Main();
-        db.startUp();
-        db.newConnection();
-    	try{
-    		db.stmt.executeUpdate(db.create_new_tb);
-    		db.stmt.executeUpdate("INSERT INTO name_age values('Alice',1)");
-    		db.stmt.executeUpdate("INSERT INTO name_age values('Bob',2)");
-    		db.stmt.executeUpdate("INSERT INTO name_age values('Charlie',3)");
-    		db.stmt.executeUpdate("INSERT INTO name_age values('Eve',5)");
-    	}
-    	catch (Exception e) {
-    		System.out.println(e);
-    	}
+    public static void main(String[] args) {		
+		Connect dbConnection = new Connect();  //start connection to db
+		Connection con = dbConnection.getConnection();
+
+		//Main welcomePage = new Main();
+		//int options = welcomePage.getOptions();
+		while (true){
+			Main welcomePage = new Main();
+			int options = welcomePage.getOptions();
+			System.out.println(con);
+			if (options == 1){
+				Admin a = new Admin(con);
+			}
+			else if(options == 2){
+				System.out.println("Entered passenger mode");
+			}
+			else if(options == 3){
+				System.out.println("Entered driver mode");
+			}
+			else if(options == 4){
+				System.out.println("Entered manager mode");
+			}
+			else if(options == 5){
+				System.out.println("bye");
+				break;
+			}
+
+		}
+        
+
     }
         
 }
