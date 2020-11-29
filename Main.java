@@ -17,7 +17,17 @@ class Main {
         System.out.println("5. None");
         System.out.println("Choose Input");
 		
-    }
+	}
+	
+	void startUp(){		
+		int options;
+		do{
+			startUpMessage();
+			Scanner s = new Scanner(System.in);
+			options = s.nextInt();
+		}while(options < 1 || options > 5);
+		
+	}
     
     void newConnection() {
 		
@@ -35,7 +45,7 @@ class Main {
 	}
     public static void main(String[] args) {
         Main db = new Main();
-        db.startUpMessage();
+        db.startUp();
         db.newConnection();
     	try{
     		db.stmt.executeUpdate(db.create_new_tb);
