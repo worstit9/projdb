@@ -42,6 +42,7 @@ class Main {
     		db.stmt.executeUpdate("INSERT INTO name_age values('Alice',1)");
     		db.stmt.executeUpdate("INSERT INTO name_age values('Bob',2)");
     		db.stmt.executeUpdate("INSERT INTO name_age values('Charlie',3)");
+    		db.stmt.executeUpdate("INSERT INTO name_age values('Eve',5)");
     	}
     	catch (Exception e) {
     		System.out.println(e);
