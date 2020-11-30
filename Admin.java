@@ -2,6 +2,7 @@ import java.sql.*;
 import java.io.*;
 import java.util.Scanner;
 
+
 class Admin{
     Boolean istableInserted = false;
     Connection con = null;
@@ -63,15 +64,16 @@ class Admin{
     }
 
     int getOptions(){
-        int options;
+        int options = 0;
 
 		adminPageMessage();
         Scanner s = new Scanner(System.in);
+        if(s.hasNextInt()){
             options = s.nextInt(); 
-
+        }
 		while(options < 1 || options > 5){
 			errorMessage();
-			options = s.nextInt();
+            options = s.nextInt(); 
 		}
 		return options;
     }

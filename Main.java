@@ -24,12 +24,11 @@ class Main {
 		System.out.println("Invalid input");
 		System.out.println("Choose Input 1-4");
 	}
-	int getOptions(){		
+	int getOptions(Scanner s){		
 		int options;
 
-
 		startUpMessage();
-		Scanner s = new Scanner(System.in);
+		//Scanner s = new Scanner(System.in);
 		options = s.nextInt();
 
 		while(options < 1 || options > 5){
@@ -39,30 +38,15 @@ class Main {
 		return options;
 		
 	}
-    
-    void newConnection() {
-		//unused
-		String dbAddress = "jdbc:mysql://projgw.cse.cuhk.edu.hk:2633/group77";
-		String dbUserName = "Group77";
-		String dbPassword = "3170group77";
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-        	con = DriverManager.getConnection(dbAddress,dbUserName,dbPassword);
-        	stmt = con.createStatement();
-            
-        } catch(Exception e) {
-        	System.out.println(e);
-        }
-	}
+
     public static void main(String[] args) {		
 		Connect dbConnection = new Connect();  //start connection to db
 		Connection con = dbConnection.getConnection();
+		Scanner s = new Scanner(System.in);
 
-		//Main welcomePage = new Main();
-		//int options = welcomePage.getOptions();
 		while (true){
 			Main welcomePage = new Main();
-			int options = welcomePage.getOptions();
+			int options = welcomePage.getOptions(s);
 			if (options == 1){
 				Admin a = new Admin(con);
 			}
