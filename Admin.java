@@ -24,8 +24,6 @@ class Admin{
         con = c;
         try{
             stmt = con.createStatement();
-            System.out.println(con);
-            System.out.println(stmt);
         }
         catch(Exception e){
             e.printStackTrace();
