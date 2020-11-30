@@ -48,7 +48,7 @@ class Main {
 			Main welcomePage = new Main();
 			int options = welcomePage.getOptions(s);
 			if (options == 1){
-				Admin a = new Admin(con);
+				Admin a = new Admin(con,s);
 			}
 			else if(options == 2){
 				System.out.println("Entered passenger mode");

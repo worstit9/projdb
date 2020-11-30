@@ -33,8 +33,9 @@ class Admin{
     String rowTaxistop = "SELECT COUNT(*) AS rc FROM taxi_stop";
 
 
-    public Admin(Connection c){
+    public Admin(Connection c,Scanner sc){
         int options;
+        Scanner s = sc;
         con = c;
         try{
             stmt = con.createStatement();
@@ -43,7 +44,7 @@ class Admin{
             e.printStackTrace();
         }
         while(true){
-            options = getOptions();
+            options = getOptions(s);
             if(options == 1){
                 createTb();
             }
@@ -51,7 +52,7 @@ class Admin{
                 dropTb();
             }
             else if (options == 3){
-                insertData();
+                insertData(s);
             }
             else if (options == 4){
                 showData();
@@ -63,11 +64,11 @@ class Admin{
 
     }
 
-    int getOptions(){
+    int getOptions(Scanner s){
         int options = 0;
 
 		adminPageMessage();
-        Scanner s = new Scanner(System.in);
+        //Scanner s = new Scanner(System.in);
         if(s.hasNextInt()){
             options = s.nextInt(); 
         }
@@ -89,7 +90,7 @@ class Admin{
             System.out.println("Create all");
     	}
     	catch (Exception e) {
-    		e.printStackTrace();
+    		System.out.println("Table already exist");
     	}
     }
 
@@ -270,11 +271,11 @@ class Admin{
 
     }
 
-    void insertData(){
+    void insertData(Scanner s){
         //should I assume that admin MUST insert data?
         String filePath = null;
         String actualPath = "test_data";
-        Scanner s = new Scanner(System.in);
+        //Scanner s = new Scanner(System.in);
         while(! actualPath.equals(filePath)){
             System.out.println("Please enter the path");
             filePath = s.nextLine();
