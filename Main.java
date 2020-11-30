@@ -41,7 +41,7 @@ class Main {
 	}
     
     void newConnection() {
-		
+		//unused
 		String dbAddress = "jdbc:mysql://projgw.cse.cuhk.edu.hk:2633/group77";
 		String dbUserName = "Group77";
 		String dbPassword = "3170group77";
@@ -63,7 +63,6 @@ class Main {
 		while (true){
 			Main welcomePage = new Main();
 			int options = welcomePage.getOptions();
-			System.out.println(con);
 			if (options == 1){
 				Admin a = new Admin(con);
 			}
