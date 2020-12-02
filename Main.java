@@ -3,10 +3,6 @@ import java.util.Scanner;
 
 class Main {
 	//class deal with start page
-    Connection con = null;
-	Statement stmt = null;
-	
-	
 
 	void startUpMessage() {
         //The welcome page
@@ -52,6 +48,7 @@ class Main {
 			}
 			else if(options == 2){
 				System.out.println("Entered passenger mode");
+				Passenger p  = new Passenger(con,s);
 			}
 			else if(options == 3){
 				System.out.println("Entered driver mode");

@@ -11,11 +11,11 @@ class Admin{
     String dataPath = "./test_data/";
     
     //all queries to be executed
-    String createDriverTb = "CREATE TABLE driver(id int, name varchar(30), vehicle_id varchar(6), driving_years int, Primary Key(id))"; 
+    String createDriverTb = "CREATE TABLE driver(id int, name varchar(30), vehicle_id varchar(6), driving_years int, Primary Key(id), Foreign key(vehicle_id) REFERENCES vehicle(id))"; 
     String createVehTb = "CREATE TABLE vehicle(id varchar(6), model varchar(30), seats int, Primary Key(id))";
     String createPassengerTb = "CREATE TABLE passenger(id int, name varchar(30), Primary Key(id))";
-    String createRequestTb = "CREATE TABLE request(id int, passenger_id int, start_location varchar(20), destination varchar(20), model varchar(30), passengers int, taken boolean, driving_years int, Primary Key(id)) ";
-    String createTripTb = "CREATE TABLE trip(id int, driver_id int, passenger_id int, start_location varchar(20), destination varchar(20), start_time datetime, end_time datetime, fee int, Primary Key(id))";
+    String createRequestTb = "CREATE TABLE request(id int, passenger_id int, start_location varchar(20), destination varchar(20), model varchar(30), passengers int, taken boolean, driving_years int, Primary Key(id), Foreign key(passenger_id) REFERENCES passenger(id)) ";
+    String createTripTb = "CREATE TABLE trip(id int, driver_id int, passenger_id int, start_location varchar(20), destination varchar(20), start_time datetime, end_time datetime, fee int, Primary Key(id), Foreign key(driver_id) REFERENCES driver(id),Foreign key(passenger_id) REFERENCES passenger(id), Foreign key(start_location) REFERENCES taxi_stop(name), Foreign key(destination) REFERENCES taxi_stop(name))";
     String createTaxistopTb = "CREATE TABLE taxi_stop(name varchar(20), location_x int, location_y int, Primary Key(name))";
 
     String dropDriverTb = "DROP TABLE driver";
@@ -81,30 +81,33 @@ class Admin{
 
     public void createTb(){
         try{
-            stmt.executeUpdate(createDriverTb);
+            
             stmt.executeUpdate(createVehTb);
             stmt.executeUpdate(createPassengerTb);
-            stmt.executeUpdate(createRequestTb);
-            stmt.executeUpdate(createTripTb);
+            stmt.executeUpdate(createDriverTb);
             stmt.executeUpdate(createTaxistopTb);
+            stmt.executeUpdate(createTripTb);        
+            stmt.executeUpdate(createRequestTb);
             System.out.println("Create all");
     	}
     	catch (Exception e) {
+            e.printStackTrace();
     		System.out.println("Table already exist");
     	}
     }
 
     public void dropTb(){
         try{
-            stmt.executeUpdate(dropDriverTb);
-            stmt.executeUpdate(dropVehTb);
-            stmt.executeUpdate(dropPassengerTb);
-            stmt.executeUpdate(dropRequestTb);
             stmt.executeUpdate(dropTripTb);
+            stmt.executeUpdate(dropRequestTb);
+            stmt.executeUpdate(dropDriverTb);       
             stmt.executeUpdate(dropTaxistopTb);
+            stmt.executeUpdate(dropPassengerTb);
+            stmt.executeUpdate(dropVehTb);
             System.out.println("Drop all");
     	}
     	catch (Exception e) {
+            e.printStackTrace();
             System.out.println("no table dropped!");
     	}
 
@@ -134,8 +137,9 @@ class Admin{
            insertVeh(vehicleReader);
            insertPassenger(passengerReader);
            insertDriver(driverReader);
-           insertTrip(tripReader);
            insertTaxistop(taxistopReader);
+           insertTrip(tripReader);
+           
         }  
         catch (Exception e){
             System.out.println(e);
