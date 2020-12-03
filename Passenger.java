@@ -2,6 +2,8 @@ import java.sql.*;
 import java.util.Scanner;
 import java.util.regex.*;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import java.util.ArrayList;
 
 class Passenger{
@@ -147,7 +149,7 @@ class Passenger{
 
         String noModelConstriantQuery = "SELECT * FROM  driver D, vehicle V WHERE V.seats >= ? AND D.driving_years >= ? AND V.id = D.vehicle_id";
         String modelConstriantQuery = "SELECT * FROM  driver D, vehicle V WHERE V.seats >= ? AND D.driving_years >= ? AND V.model = ? AND V.id = D.vehicle_id";
-        String insertIntoRequest = "INSERT INTO request values()";
+        
 
         ResultSet rs;
         try{
@@ -164,21 +166,21 @@ class Passenger{
             System.out.println("Please enter number of passenger");
             noOfPassenger = s.nextInt();
             while(noOfPassenger > 7){
-                System.out.println("invalid value of passenger");
+                System.out.println("ERROR: invalid value of passenger");
                 noOfPassenger = s.nextInt();
             }
             System.out.println("Please enter start location");
             startLoc = s.nextLine();
             startLoc = s.nextLine();
             while(!isinArrayList(allTaxiStops, startLoc)){
-                System.out.println("Not a valid stop");
+                System.out.println("ERROR: Not a valid stop");
                 startLoc = s.nextLine();
             }
             System.out.println("Please enter destination");
             endLoc = s.nextLine();
             while(!isinArrayList(allTaxiStops, endLoc) || startLoc.equalsIgnoreCase(endLoc)){
                 if(!isinArrayList(allTaxiStops, endLoc)){
-                    System.out.println("Not a valid stop");
+                    System.out.println("ERROR: Not a valid stop");
                 }
                 else{
                     System.out.println("same stop");
@@ -193,8 +195,11 @@ class Passenger{
             }
             else{
                 allCarCanChoice = getAllInArrayList(allCarModels, model);
-                System.out.println(allCarCanChoice);
                 isModelConstriant = true;
+                if(allCarCanChoice.isEmpty()){
+                    System.out.println("ERROR: no car satisify");
+                    isModelConstriant = false;
+                }
             }
             System.out.println("Please enter min driving year(enter to skip)");
             try{
@@ -205,7 +210,6 @@ class Passenger{
                 //receive no input -> can't parse int
                 drivYears = -1;
             }
-            System.out.printf("Pid: %d Number of passenger: %d Start at: %s End at: %s Type: %s Driving years:%d\n",pid,noOfPassenger,startLoc,endLoc,model,drivYears);
             if(isModelConstriant){
                 for(String i : allCarCanChoice){
                     modelConstriant.setInt(1, noOfPassenger);
@@ -216,7 +220,6 @@ class Passenger{
                         count++;
                     }
                 }
-
             }
             else{
                 noModelConstriant.setInt(1, noOfPassenger);
@@ -226,13 +229,17 @@ class Passenger{
                     count++;
                 }
             }
-
+            insertIntoRequest(pid, startLoc, endLoc, model, noOfPassenger, drivYears);
             System.out.printf("Your order is placed, %d drivers are able to take your request.",count);
 
         }
         catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    void checkCarModelConstriant(){
+
     }
 
     void chkRecords(Scanner s){
@@ -288,10 +295,28 @@ class Passenger{
         System.out.println("Error, choose 1-3");
     }
 
-    void tmpTester(){
-        ArrayList<String> al = getAllCarModels();
-        System.out.println(al);
-        ArrayList<String> resultAl = getAllInArrayList(al, "Toyota");
-        System.out.println(resultAl);
+
+    void insertIntoRequest(int pid, String startLoc, String endLoc, String model, int noOfPassenger, int drivYears){
+        String insertIntoRequest = "INSERT INTO request values(?,?,?,?,?,?,0,?)";
+        String rowRequest = "SELECT COUNT(*) AS rc FROM request";
+        ResultSet r2 = null;
+        try{
+            PreparedStatement p1 = con.prepareStatement(insertIntoRequest);
+            r2 = stmt.executeQuery(rowRequest);
+            r2.next();
+            int count = r2.getInt("rc") + 1;
+            p1.setInt(1, count);
+            p1.setInt(2, pid);
+            p1.setString(3, startLoc);
+            p1.setString(4, endLoc);
+            p1.setString(5, model);
+            p1.setInt(6, noOfPassenger);
+            p1.setInt(7, drivYears);
+            p1.execute();
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

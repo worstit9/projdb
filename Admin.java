@@ -14,7 +14,7 @@ class Admin{
     String createDriverTb = "CREATE TABLE driver(id int, name varchar(30), vehicle_id varchar(6), driving_years int, Primary Key(id), Foreign key(vehicle_id) REFERENCES vehicle(id))"; 
     String createVehTb = "CREATE TABLE vehicle(id varchar(6), model varchar(30), seats int, Primary Key(id))";
     String createPassengerTb = "CREATE TABLE passenger(id int, name varchar(30), Primary Key(id))";
-    String createRequestTb = "CREATE TABLE request(id int, passenger_id int, start_location varchar(20), destination varchar(20), model varchar(30), passengers int, taken boolean, driving_years int, Primary Key(id), Foreign key(passenger_id) REFERENCES passenger(id)) ";
+    String createRequestTb = "CREATE TABLE request(id int, passenger_id int, start_location varchar(20), destination varchar(20), model varchar(30), passengers int, taken int, driving_years int, Primary Key(id), Foreign key(passenger_id) REFERENCES passenger(id)) ";
     String createTripTb = "CREATE TABLE trip(id int, driver_id int, passenger_id int, start_location varchar(20), destination varchar(20), start_time datetime, end_time datetime, fee int, Primary Key(id), Foreign key(driver_id) REFERENCES driver(id),Foreign key(passenger_id) REFERENCES passenger(id), Foreign key(start_location) REFERENCES taxi_stop(name), Foreign key(destination) REFERENCES taxi_stop(name))";
     String createTaxistopTb = "CREATE TABLE taxi_stop(name varchar(20), location_x int, location_y int, Primary Key(name))";
 

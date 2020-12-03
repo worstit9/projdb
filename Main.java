@@ -55,6 +55,7 @@ class Main {
 			}
 			else if(options == 4){
 				System.out.println("Entered manager mode");
+				Manager m = new Manager(con,s);
 			}
 			else if(options == 5){
 				System.out.println("bye");
